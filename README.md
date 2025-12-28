@@ -1,6 +1,6 @@
 # Uniswap v3 Swap Project
 
-A simple Node.js project for executing Uniswap v3 swaps on Sepolia testnet using Hardhat. Includes a custom swap router contract and a bundler for transaction privacy.
+A simple Node.js project for executing Uniswap v3 swaps on Sepolia testnet using Hardhat. Includes a custom swap router contract and a bundler for transaction one block execution.
 
 ## Prerequisites
 
@@ -25,15 +25,10 @@ BUNDLER_ADDRESS=0xf0d5b956C7D9e541606Cc6d156ab258AFAeb314E
 # Optional: Slippage protection (in basis points, 200 = 2%, 100 = 1%)
 SLIPPAGE_BPS=200
 
-# Optional: For private transaction submission (production networks)
+# Optional: For private submissions 
 USE_PRIVATE_RPC=false
-PRIVATE_RPC_URL=https://rpc.flashtrades.io/sepolia
+PRIVATE_RPC_URL=https://rpc.private.io/sepolia
 ```
-
-**For Production (Mainnet)**: Private RPC is **REQUIRED**. Use:
-- FlashTrades (free): `https://rpc.flashtrades.io/mainnet`
-- Flashbots Protect (free): `https://rpc.flashbots.net`
-- Eden Network: `https://api.edennetwork.io/v1/rpc`
 
 ## Usage
 
@@ -78,7 +73,6 @@ The `SwapBundler` contract provides transaction privacy by:
 1. **Hiding Your Address**: Transactions appear to come from the bundler contract, not your wallet
 2. **Single Transaction Bundling**: Each swap can be submitted as a single bundle
 3. **Batch Swaps**: Option to batch multiple swaps in one transaction
-4. **Obfuscation**: Optional dummy operations to further obfuscate transactions
 
 ### How It Works
 
@@ -132,38 +126,6 @@ The `SwapBundler` contract provides transaction privacy by:
 - The swap uses exact input (you specify input amount, output is variable)
 - Always verify pool exists before attempting a swap
 
-## Privacy & MEV Protection
-
-⚠️ **Important**: Using Alchemy RPC does **NOT** provide transaction privacy. See [PRIVACY.md](./PRIVACY.md) for detailed information.
-
-### New Features
-
-✅ **Automatic Slippage Calculation**: 
-- Gets quote before swap
-- Calculates minimum output (default 98% = 2% slippage tolerance)
-- Configurable via `SLIPPAGE_BPS` (200 = 2%, 100 = 1%)
-- Protects against MEV attacks and price manipulation
-
-✅ **Automatic MEV Protection for Sepolia**:
-- Automatically uses bundler + slippage protection on Sepolia
-- Bundler hides your address
-- Slippage protection prevents excessive losses
-- Graceful fallback if private RPC unavailable
-
-✅ **Private RPC Enforcement**:
-- **Production networks (mainnet)**: Private RPC is **REQUIRED**
-- Automatically detects production networks
-- Supports Flashbots Protect, Eden Network
-- Free alternatives available
-
-**Quick Summary**:
-- ✅ Bundler hides your address
-- ✅ Automatic slippage protection (2% default, configurable)
-- ✅ Automatic MEV protection on Sepolia (bundler + slippage)
-- ✅ Private RPC enforcement for production (mainnet)
-- ⚠️ Transactions still in public mempool on testnet (Alchemy RPC limitation)
-- 💡 Use `npm run swap-private` for additional MEV protection (higher gas price)
-- 📖 See [PRIVACY.md](./PRIVACY.md) for complete privacy guide
 
 ## Troubleshooting
 
