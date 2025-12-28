@@ -1,4 +1,4 @@
-# Uniswap v3 Swap Project
+# Uniswap v3 Swap Bundler
 
 A simple Node.js project for executing Uniswap v3 swaps on Sepolia testnet using Hardhat. Includes a custom swap router contract and a bundler for transaction one block execution.
 
